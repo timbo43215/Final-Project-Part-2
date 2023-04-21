@@ -14,6 +14,23 @@
 		AB4213FB29F30A5700BF2B0F /* Final_Project_Part_2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4213FA29F30A5700BF2B0F /* Final_Project_Part_2Tests.swift */; };
 		AB42140529F30A5700BF2B0F /* Final_Project_Part_2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42140429F30A5700BF2B0F /* Final_Project_Part_2UITests.swift */; };
 		AB42140729F30A5700BF2B0F /* Final_Project_Part_2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42140629F30A5700BF2B0F /* Final_Project_Part_2UITestsLaunchTests.swift */; };
+		AB42141629F30A8500BF2B0F /* Energy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141529F30A8500BF2B0F /* Energy.swift */; };
+		AB42141729F30A8500BF2B0F /* Energy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141529F30A8500BF2B0F /* Energy.swift */; };
+		AB42141829F30A8500BF2B0F /* Energy.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141529F30A8500BF2B0F /* Energy.swift */; };
+		AB42141A29F30A9900BF2B0F /* Spins.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141929F30A9900BF2B0F /* Spins.swift */; };
+		AB42141B29F30A9900BF2B0F /* Spins.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141929F30A9900BF2B0F /* Spins.swift */; };
+		AB42141C29F30A9900BF2B0F /* Spins.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141929F30A9900BF2B0F /* Spins.swift */; };
+		AB42141E29F30AAD00BF2B0F /* Potential.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141D29F30AAD00BF2B0F /* Potential.swift */; };
+		AB42141F29F30AAD00BF2B0F /* Potential.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141D29F30AAD00BF2B0F /* Potential.swift */; };
+		AB42142029F30AAD00BF2B0F /* Potential.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42141D29F30AAD00BF2B0F /* Potential.swift */; };
+		AB42142229F30AC600BF2B0F /* Spin Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142129F30AC600BF2B0F /* Spin Struct.swift */; };
+		AB42142329F30AC600BF2B0F /* Spin Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142129F30AC600BF2B0F /* Spin Struct.swift */; };
+		AB42142429F30AC600BF2B0F /* Spin Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142129F30AC600BF2B0F /* Spin Struct.swift */; };
+		AB42142629F30ADE00BF2B0F /* twoDMagnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */; };
+		AB42142729F30ADE00BF2B0F /* twoDMagnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */; };
+		AB42142829F30ADE00BF2B0F /* twoDMagnet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */; };
+		AB42142929F30BE000BF2B0F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4213EA29F30A5600BF2B0F /* ContentView.swift */; };
+		AB42142A29F30BE100BF2B0F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4213EA29F30A5600BF2B0F /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +62,11 @@
 		AB42140029F30A5700BF2B0F /* Final Project Part 2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Final Project Part 2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB42140429F30A5700BF2B0F /* Final_Project_Part_2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Final_Project_Part_2UITests.swift; sourceTree = "<group>"; };
 		AB42140629F30A5700BF2B0F /* Final_Project_Part_2UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Final_Project_Part_2UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		AB42141529F30A8500BF2B0F /* Energy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Energy.swift; sourceTree = "<group>"; };
+		AB42141929F30A9900BF2B0F /* Spins.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spins.swift; sourceTree = "<group>"; };
+		AB42141D29F30AAD00BF2B0F /* Potential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Potential.swift; sourceTree = "<group>"; };
+		AB42142129F30AC600BF2B0F /* Spin Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Spin Struct.swift"; sourceTree = "<group>"; };
+		AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = twoDMagnet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +119,11 @@
 			children = (
 				AB4213E829F30A5600BF2B0F /* Final_Project_Part_2App.swift */,
 				AB4213EA29F30A5600BF2B0F /* ContentView.swift */,
+				AB42141529F30A8500BF2B0F /* Energy.swift */,
+				AB42141929F30A9900BF2B0F /* Spins.swift */,
+				AB42141D29F30AAD00BF2B0F /* Potential.swift */,
+				AB42142129F30AC600BF2B0F /* Spin Struct.swift */,
+				AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */,
 				AB4213EC29F30A5700BF2B0F /* Assets.xcassets */,
 				AB4213F129F30A5700BF2B0F /* Final_Project_Part_2.entitlements */,
 				AB4213EE29F30A5700BF2B0F /* Preview Content */,
@@ -260,7 +287,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB4213EB29F30A5600BF2B0F /* ContentView.swift in Sources */,
+				AB42142229F30AC600BF2B0F /* Spin Struct.swift in Sources */,
+				AB42142629F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
+				AB42141E29F30AAD00BF2B0F /* Potential.swift in Sources */,
+				AB42141629F30A8500BF2B0F /* Energy.swift in Sources */,
 				AB4213E929F30A5600BF2B0F /* Final_Project_Part_2App.swift in Sources */,
+				AB42141A29F30A9900BF2B0F /* Spins.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +300,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB42141B29F30A9900BF2B0F /* Spins.swift in Sources */,
+				AB42142729F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
+				AB42142929F30BE000BF2B0F /* ContentView.swift in Sources */,
 				AB4213FB29F30A5700BF2B0F /* Final_Project_Part_2Tests.swift in Sources */,
+				AB42142329F30AC600BF2B0F /* Spin Struct.swift in Sources */,
+				AB42141F29F30AAD00BF2B0F /* Potential.swift in Sources */,
+				AB42141729F30A8500BF2B0F /* Energy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +315,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB42140529F30A5700BF2B0F /* Final_Project_Part_2UITests.swift in Sources */,
+				AB42142429F30AC600BF2B0F /* Spin Struct.swift in Sources */,
+				AB42142A29F30BE100BF2B0F /* ContentView.swift in Sources */,
+				AB42142829F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
+				AB42142029F30AAD00BF2B0F /* Potential.swift in Sources */,
+				AB42141829F30A8500BF2B0F /* Energy.swift in Sources */,
 				AB42140729F30A5700BF2B0F /* Final_Project_Part_2UITestsLaunchTests.swift in Sources */,
+				AB42141C29F30A9900BF2B0F /* Spins.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
