@@ -11,15 +11,16 @@ import Foundation
 class TwoDMagnet: ObservableObject {
     //var spins = Set<Spin>()
     var spins :[Spin] = []
+    var spinConfiguration: [[Double]]?
     
-    func setup(N: Int, spinConfiguration: [[Double]], isThereAnythingInMyVariable: Bool){
+    func setup(N: Int, isThereAnythingInMyVariable: Bool){
         let N = Double(N)
         let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         var currentSpinValue = true
         var isThereAnythingInMyVariable: Bool = false
         
-        if (spinConfiguration.isEmpty == false) {
+        if (spinConfiguration != nil) {
             isThereAnythingInMyVariable = true
         }
         
@@ -27,7 +28,7 @@ class TwoDMagnet: ObservableObject {
             
             for x in 0..<(upperLimitInteger - 1){
                                 
-                if (spinConfiguration[x][y] == 0.5) {
+                if (spinConfiguration![x][y] == 0.5) {
                     currentSpinValue = true
                 }
                 else {
@@ -39,14 +40,16 @@ class TwoDMagnet: ObservableObject {
         }
     }
 
-    func update(to date: Date, N: Int, spinConfiguration: [[Double]], isThereAnythingInMyVariable: Bool) {
+    func update(to date: Date, N: Int, isThereAnythingInMyVariable: Bool) {
+        print("Spin Configuration in Update:")
+        print(spinConfiguration)
         let N = Double(N)
         let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         var currentSpinValue = true
         var isThereAnythingInMyVariable: Bool = false
         
-        if (spinConfiguration.isEmpty == false) {
+        if (spinConfiguration != nil) {
             isThereAnythingInMyVariable = true
         }
         
@@ -55,7 +58,7 @@ class TwoDMagnet: ObservableObject {
                 
                 for x in 0..<(upperLimitInteger) {
                     
-                    if (spinConfiguration[x][y] == 0.5) {
+                    if (spinConfiguration![x][y] == 0.5) {
                         currentSpinValue = true
                     }
                     else {

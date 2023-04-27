@@ -14,18 +14,18 @@ struct ContentView: View {
     @State var spinArray: [Double] = []
     @State var nextSpinArray: [Double] = []
     @State var timeArray: [Double] = []
-    @State var N: String = "4.0"
+    @State var N: String = "100.0"
     @State var J: String = "1.0"
     @State var g: String = "1.0"
     @State var B: String = "0.0"
-    @State var kT: String = "1.0"
+    @State var kT: String = "100.0"
     @State var potentialArray: [Double] = []
     @State var trialEnergy: Double = 0.0
     @State var energy: Double = 0.0
     @StateObject var mySpins = Spins()
     @StateObject var myEnergy = Energy()
     @StateObject var myPotential = Potential()
-    @StateObject private var twoDMagnet = TwoDMagnet()
+    @StateObject var twoDMagnet = TwoDMagnet()
     let upColor = Color(red: 0.25, green: 0.5, blue: 0.75)
     let downColor = Color(red: 0.75, green: 0.5, blue: 0.25)
     
@@ -59,7 +59,7 @@ struct ContentView: View {
             VStack(){
                 TimelineView(.animation) { timeline in
                     Canvas { context, size in
-                        twoDMagnet.update(to: timeline.date, N: Int(Double(N)!), spinConfiguration: mySpins.spinConfiguration, isThereAnythingInMyVariable: false)
+                        twoDMagnet.update(to: timeline.date, N: Int(Double(N)!), isThereAnythingInMyVariable: false)
                         
                         for spin in twoDMagnet.spins {
                             let N = Double(N)!
@@ -90,14 +90,15 @@ struct ContentView: View {
         let N = Double(N)!
         self.clearParameters ()
         self.calculateColdMetropolisAlgorithm2D()
-        twoDMagnet.setup(N: Int(N), spinConfiguration: mySpins.spinConfiguration, isThereAnythingInMyVariable: false)
+        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
     }
-    
     func setupArbitrarySpins(){
         let N = Double(N)!
         self.clearParameters ()
         self.calculateArbitraryMetropolisAlgorithm2D()
-        twoDMagnet.setup(N: Int(N), spinConfiguration: mySpins.spinConfiguration, isThereAnythingInMyVariable: false)
+        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
     }
     
     func clearParameters () {
@@ -300,7 +301,7 @@ struct ContentView: View {
             let upperLimit = sqrt(N)
             let upperLimitInteger = Int(upperLimit)
 //            var count: [Double] = []
-            var timeValue = 0.0
+    //        var timeValue = 0.0
             calculateArbitrarySpinConfiguration2D ()
             
          //   for y in 0...(upperLimitInteger - 1) {
@@ -322,41 +323,6 @@ struct ContentView: View {
            // print(mySpins.timeComponent)
             print(myEnergy.energy1D)
         }
-        
-        /// 3. Calculate the energy Eαtr of the trial configuration.
-        ///
-        ///                                  N-1                  N
-        /// E(αk) = < a(k)|sum {V(i)}|a(k)> = -J sum    {s(i)*s(i+1)} - B (mu)  sum {s(i)}
-        ///                                  i=1                                 b     i=1
-        /// This calculates the energy of the Trial Configuration using Equation 15.4 in Landau and creates
-        /// a 2x2 matrix of the energy values.
-//        func calculateEnergyOfTrialConfiguration2D () {
-//            let N = Double(N)!
-//            let upperLimit = pow(2.0, N)
-//            let upperLimitInteger = Int(upperLimit)
-//            let J = Double(J)!
-//            let eValue = 2.7182818284590452353602874713
-//            // hbarc in eV*Angstroms
-//            let hbarc = 1973.269804
-//            // mass of electron in eVc^2
-//            let m = 510998.95000
-//            let g = Double(g)!
-//            let gbohrMagneton = g*((eValue*hbarc)/(2.0*m))
-//            var energy = 0.0
-//            var totalTotalEnergy = 0.0
-//            var finalEnergy = 0.0
-//            let B = Double(B)!
-//
-//            for y in 0...(upperLimitInteger - 1) {
-//                for x in 0...(upperLimitInteger - 1) {
-//                    let potentialValue = (spinArray[x]*spinArray[x+1]) - (gbohrMagneton*(spinArray[x]*B))
-//                    energy = energy + potentialValue
-//                }
-//                totalTotalEnergy = totalTotalEnergy + energy
-//            }
-//            finalEnergy = Double(-J)*totalTotalEnergy
-//            print(finalEnergy)
-//        }
 }
 
     
