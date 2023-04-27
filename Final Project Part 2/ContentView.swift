@@ -225,28 +225,43 @@ struct ContentView: View {
     }
     func calculateEnergyCheck (x: Int, trialConfiguration: [[Double]]) {
             let uniformRandomNumber = Double.random(in: 0...1)
-            if (x > 0) {
-                if (trialEnergy <= energy) {
-                    mySpins.spinConfiguration = trialConfiguration
-                    myEnergy.energy1D.append(trialEnergy)
-                    print("Trial Accepted")
-                    print(mySpins.spinConfiguration)
+        for i in 0..<mySpins.spinConfiguration.count {
+            
+            for j in 0..<mySpins.spinConfiguration.count {
+                
+                
+                let myRandomNumber = Bool.random()
+                if myRandomNumber {
+                    mySpins.spinConfiguration[i][j] = 0.5
                 }
                 else {
-                    if (calculateRelativeProbability() >= uniformRandomNumber){
-                        mySpins.spinConfiguration = trialConfiguration
-                        myEnergy.energy1D.append(trialEnergy)
-                        print("Trial Accepted")
-                        print(mySpins.spinConfiguration)
-                    }
-                    else {
-                        //mySpins.spinConfiguration.removeLast()
-                        myEnergy.energy1D.append(energy)
-                        print("Trial Rejected")
-                        print(mySpins.spinConfiguration)
-                    }
+                    mySpins.spinConfiguration[i][j] = -0.5
                 }
             }
+        }
+//            if (x > 0) {
+//                if (trialEnergy <= energy) {
+//                    mySpins.spinConfiguration = trialConfiguration
+//                    myEnergy.energy1D.append(trialEnergy)
+//                    print("Trial Accepted")
+//                    print(mySpins.spinConfiguration)
+//                }
+//                else {
+//                    if (calculateRelativeProbability() >= uniformRandomNumber){
+//                        mySpins.spinConfiguration = trialConfiguration
+//                        myEnergy.energy1D.append(trialEnergy)
+//                        print("Trial Accepted")
+//                        print(mySpins.spinConfiguration)
+//                    }
+//                    else {
+//                        //mySpins.spinConfiguration.removeLast()
+//                        myEnergy.energy1D.append(energy)
+//                        print("Trial Rejected")
+//                        print(mySpins.spinConfiguration)
+//                    }
+//                }
+//            }
+        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
         }
         /// This calculates the relative probability from Equation 15.13 on page 395 in Landau.
         ///  R = exp(-deltaE/kT), where k is the boltzmann constant, T is temperature in Kelvin, and
