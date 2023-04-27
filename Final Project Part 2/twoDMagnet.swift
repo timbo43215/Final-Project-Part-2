@@ -14,7 +14,7 @@ class TwoDMagnet: ObservableObject {
     
     func setup(N: Int, spinConfiguration: [[Double]], isThereAnythingInMyVariable: Bool){
         let N = Double(N)
-        let upperLimit = pow(2.0, N)
+        let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         var currentSpinValue = true
         var isThereAnythingInMyVariable: Bool = false
@@ -41,7 +41,7 @@ class TwoDMagnet: ObservableObject {
 
     func update(to date: Date, N: Int, spinConfiguration: [[Double]], isThereAnythingInMyVariable: Bool) {
         let N = Double(N)
-        let upperLimit = pow(2.0, N)
+        let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         var currentSpinValue = true
         var isThereAnythingInMyVariable: Bool = false
