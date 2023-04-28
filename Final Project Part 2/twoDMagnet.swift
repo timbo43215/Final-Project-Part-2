@@ -41,14 +41,14 @@ class TwoDMagnet: ObservableObject {
     }
 
     func update(to date: Date, N: Int, isThereAnythingInMyVariable: Bool) {
-        print("Spin Configuration in Update:")
-        print(spinConfiguration)
+        //print("Spin Configuration in Update:")
+        //print(spinConfiguration)
         let N = Double(N)
         let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         var currentSpinValue = true
         var isThereAnythingInMyVariable: Bool = false
-        
+                
         if (spinConfiguration != nil) {
             isThereAnythingInMyVariable = true
         }

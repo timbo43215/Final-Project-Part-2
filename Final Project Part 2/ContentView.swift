@@ -225,43 +225,43 @@ struct ContentView: View {
     }
     func calculateEnergyCheck (x: Int, trialConfiguration: [[Double]]) {
             let uniformRandomNumber = Double.random(in: 0...1)
-        for i in 0..<mySpins.spinConfiguration.count {
-            
-            for j in 0..<mySpins.spinConfiguration.count {
-                
-                
-                let myRandomNumber = Bool.random()
-                if myRandomNumber {
-                    mySpins.spinConfiguration[i][j] = 0.5
-                }
-                else {
-                    mySpins.spinConfiguration[i][j] = -0.5
-                }
-            }
-        }
-//            if (x > 0) {
-//                if (trialEnergy <= energy) {
-//                    mySpins.spinConfiguration = trialConfiguration
-//                    myEnergy.energy1D.append(trialEnergy)
-//                    print("Trial Accepted")
-//                    print(mySpins.spinConfiguration)
+//        for i in 0..<mySpins.spinConfiguration.count {
+//
+//            for j in 0..<mySpins.spinConfiguration.count {
+//
+//
+//                let myRandomNumber = Bool.random()
+//                if myRandomNumber {
+//                    mySpins.spinConfiguration[i][j] = 0.5
 //                }
 //                else {
-//                    if (calculateRelativeProbability() >= uniformRandomNumber){
-//                        mySpins.spinConfiguration = trialConfiguration
-//                        myEnergy.energy1D.append(trialEnergy)
-//                        print("Trial Accepted")
-//                        print(mySpins.spinConfiguration)
-//                    }
-//                    else {
-//                        //mySpins.spinConfiguration.removeLast()
-//                        myEnergy.energy1D.append(energy)
-//                        print("Trial Rejected")
-//                        print(mySpins.spinConfiguration)
-//                    }
+//                    mySpins.spinConfiguration[i][j] = -0.5
 //                }
 //            }
-        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+//        }
+            if (x > 0) {
+                if (trialEnergy <= energy) {
+                    mySpins.spinConfiguration = trialConfiguration
+                    myEnergy.energy1D.append(trialEnergy)
+                    print("Trial Accepted")
+                    print(mySpins.spinConfiguration)
+                }
+                else {
+                    if (calculateRelativeProbability() >= uniformRandomNumber){
+                        mySpins.spinConfiguration = trialConfiguration
+                        myEnergy.energy1D.append(trialEnergy)
+                        print("Trial Accepted")
+                        print(mySpins.spinConfiguration)
+                    }
+                    else {
+                        //mySpins.spinConfiguration.removeLast()
+                        myEnergy.energy1D.append(energy)
+                        print("Trial Rejected")
+                        print(mySpins.spinConfiguration)
+                    }
+                }
+            }
+        //twoDMagnet.spinConfiguration = mySpins.spinConfiguration
         }
         /// This calculates the relative probability from Equation 15.13 on page 395 in Landau.
         ///  R = exp(-deltaE/kT), where k is the boltzmann constant, T is temperature in Kelvin, and
@@ -277,12 +277,87 @@ struct ContentView: View {
             
             return R
         }
-        /// U
-        func calculateInternalEnergy1D () {
+        // From Equation 15.15
+        // U(T) = <E>
+        //
+    
+        func calculateInternalEnergy2D () -> Double {
+            let energyCount = myEnergy.energy1D.count
+            var totalEnergy: Double = 0.0
+            var internalEnergy: Double = 0.0
             
+            for U in 0...(energyCount - 1) {
+                totalEnergy = totalEnergy + myEnergy.energy1D[U]
+            }
+            let energyCountDouble = Double(energyCount)
+            internalEnergy = totalEnergy/energyCountDouble
+            print("Internal Energy:"); print(internalEnergy)
+            return internalEnergy
         }
+    // From Equation 15.14
+    //       N
+    //      ___
+    //      \
+    // M  =  >  s
+    //  j   /    i
+    //      ---
+    //      i=1
+    
+    func calculateMagnetization2D () -> Double {
+        let N = Double(N)!
+        let upperLimit = sqrt(N)
+        let upperLimitInteger = Int(upperLimit)
+        var magnetization: Double = 0.0
+        
+        for j in 0...(upperLimitInteger - 1){
+            for i in 0...(upperLimitInteger - 1) {
+                magnetization = magnetization + mySpins.spinConfiguration[i][j]
+            }
+        }
+        return magnetization
+    }
+    //Equation 15.17:
+    //                             _
+    //       1                    |     2
+    // U  = --- SUM(from t=1 to M)| (E )
+    //  2    M                    |_  t
+    //
+    func calculateU2 () -> Double {
+        var U2: Double = 0.0
+        var U2Sum: Double = 0.0
+        var energyValueForSum: Double = 0.0
+        let N = Double(N)!
+        let upperLimit = sqrt(N)
+        let upperLimitInteger = Int(upperLimit)
+        
+        for i in 1...(upperLimitInteger - 1) {
+            energyValueForSum = myEnergy.energy1D[i]
+            U2Sum = pow(energyValueForSum, 2.0)
+        }
+        U2 = U2Sum/N
+        
+        return U2
+    }
+    //Equation 15.18:
+    //      1    U2 - (U)^2
+    // C = ---- ------------
+    //    (N)^2    kT^2
+    
+    func calculateSpecificHeat () -> Double {
+        let N = Double(N)!
+        let kT = Double(kT)!
+        var specificHeat: Double = 0.0
+        var U2 = calculateU2()
+        var U = calculateInternalEnergy2D()
+            
+        specificHeat = (U2 - pow(U, 2.0))/(pow(N, 2.0)*pow(kT, 2.0))
+        
+        return specificHeat
+    }
+    
         // 15.4.1 Metropolis Algorithm Implementation
     func calculateColdMetropolisAlgorithm2D () {
+            print("Beginning of Metropolis Algorithm with Cold Initial Spin Configuration:")
             let J: Int = 1
             let N = Double(N)!
             let upperLimit = sqrt(N)
@@ -291,6 +366,7 @@ struct ContentView: View {
             var timeValue = 0.0
             calculateColdSpinConfiguration2D ()
           //  for y in 0...(upperLimitInteger - 1) {
+          // might need to be for x in 1...(upperLimitInteger) not sure
                 for x in 1...(upperLimitInteger) {
                     var trialConfiguration = calculateTrialConfiguration2D()
                     calculateEnergyOfTrialConfiguration2D(x: x, J: J, trialConfiguration: trialConfiguration)
@@ -299,18 +375,32 @@ struct ContentView: View {
                     //trialEnergy = 0.0
                     //energy = 0.0
                 }
+        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
             //0    timeValue = Double(y-1) + 1.0
               //  count.append(timeValue)
               //  mySpins.timeComponent.append(count)
              //   mySpins.spinConfiguration.append(mySpins.spinConfiguration[y])
            // }
+            var internalEnergy = calculateInternalEnergy2D()
+            var magnetization = calculateMagnetization2D()
+            var specificHeat = calculateSpecificHeat()
+            print("Number of Updates")
             print(mySpins.spinConfiguration.count)
+            print("Spin Configuration:")
             print(mySpins.spinConfiguration)
-            //print(mySpins.timeComponent)
+           // print(mySpins.timeComponent)
+            print("Energy of Each Update:")
             print(myEnergy.energy1D)
+            print("Internal Energy:")
+            print(internalEnergy)
+            print("Magnetization:")
+            print(magnetization)
+            print("Specific Heat:")
+            print(specificHeat)
         
         }
     func calculateArbitraryMetropolisAlgorithm2D () {
+            print("Beginning of Metropolis Algorithm with Arbitrary Initial Spin Configuration:")
             let J: Int = 1
             let N = Double(N)!
             let upperLimit = sqrt(N)
@@ -333,10 +423,22 @@ struct ContentView: View {
               //  mySpins.timeComponent.append(count)
              //   mySpins.spinConfiguration.append(mySpins.spinConfiguration[y])
           //  }
+            var internalEnergy = calculateInternalEnergy2D()
+            var magnetization = calculateMagnetization2D()
+            var specificHeat = calculateSpecificHeat()
+            print("Number of Updates")
             print(mySpins.spinConfiguration.count)
+            print("Spin Configuration:")
             print(mySpins.spinConfiguration)
            // print(mySpins.timeComponent)
+            print("Energy of Each Update:")
             print(myEnergy.energy1D)
+            print("Internal Energy:")
+            print(internalEnergy)
+            print("Magnetization:")
+            print(magnetization)
+            print("Specific Heat:")
+            print(specificHeat)
         }
 }
 
