@@ -42,21 +42,21 @@ struct ContentView: View {
                     Text("kT:")
                     TextField("kT:", text: $kT)
                 }
-                Button(action: {
-                    self.calculateColdSpinConfiguration2D()})
-                {Text("Calculate Cold Spin Configuration")}
-                Button(action: {
-                    self.calculateArbitrarySpinConfiguration2D()})
-                {Text("Calculate Arbitrary Spin Configuration")}
-                Button(action: {
-                    self.calculateTrialConfiguration2D()})
-                {Text("Calculate Trial Configuration")}
+//                Button(action: {
+//                    self.calculateColdSpinConfiguration2D()})
+//                {Text("Calculate Cold Spin Configuration")}
+//                Button(action: {
+//                    self.calculateArbitrarySpinConfiguration2D()})
+//                {Text("Calculate Arbitrary Spin Configuration")}
+//                Button(action: {
+//                    self.calculateTrialConfiguration2D()})
+//                {Text("Calculate Trial Configuration")}
 //                Button(action: {
 //                    self.calculateColdMetropolisAlgorithm2D()})
 //                {Text("Calculate Cold Metropolis Algorithm")}
-                Button(action: {
-                    self.calculateArbitraryMetropolisAlgorithm2D()})
-                {Text("Calculate Cold Metropolis Algorithm")}
+//                Button(action: {
+//                    self.calculateArbitraryMetropolisAlgorithm2D()})
+//                {Text("Calculate Cold Metropolis Algorithm")}
             }
             VStack(){
                 TimelineView(.animation) { timeline in
@@ -80,18 +80,17 @@ struct ContentView: View {
                 .ignoresSafeArea()
                 .padding()
                 
-                Button("Start from Cold", action: setupSpins)
+                Button("Start from Cold", action: setupSpinsfromCold)
+                Button("SpinMeCold", action: changeSpinsfromCold)
                 
-                Button("SpinMe", action: changeSpins)
+                Button("Start from Arbitrary", action: setupSpinsfromArbitrary)
+                Button("SpinMeArbitrary", action: changeSpinsfromArbitrary)
                 
-                
-               // Button("Start from Cold", action: setupColdSpins)
-                Button("Start from Arbitrary", action: setupArbitrarySpins)
             }
         }
     }
     
-    func setupSpins(){
+    func setupSpinsfromCold(){
         let N = Double(N)!
         spinWidth = Int(sqrt(N))
         var currentSpinValue = true
@@ -105,58 +104,54 @@ struct ContentView: View {
                                 else {
                                     currentSpinValue = false
                                 }
-
                 twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.append(Spin(x: Double(i), y: Double(j), spin: currentSpinValue))
             }
         }
-        
-        //twoDMagnet.setup(number: Int(spinWidth))
-        
     }
     
-    func spinChangeMethod(thing: inout [Spin]) {
-        for i in 0..<twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.count {
-            
-            thing[i].spin = Bool.random()
-        }
-    }
-    
-    func changeSpins(){
-        
+    func changeSpinsfromCold(){
         Task{
-            
-           // for _ in 0...10000{
-//                await withTaskGroup(of: Void.self) { group in
-
             await self.calculateColdMetropolisAlgorithm2D()
-//                    //spinChangeMethod(thing: &thing)
-//
-//                   // self.twoDMagnet.plotSpinConfiguration.plotSpinConfiguration = thing
-//
-//
- //               }
-                
-                
-          //  }
-            
+            }
+        }
+    
+    func setupSpinsfromArbitrary(){
+        let N = Double(N)!
+        spinWidth = Int(sqrt(N))
+        var currentSpinValue = true
+        self.calculateArbitrarySpinConfiguration2D()
+        
+        for j in 0..<spinWidth {
+            for i in 0..<spinWidth {
+                if (mySpins.spinConfiguration[i][j] == 0.5) {
+                                    currentSpinValue = true
+                                }
+                                else {
+                                    currentSpinValue = false
+                                }
+                twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.append(Spin(x: Double(i), y: Double(j), spin: currentSpinValue))
+            }
         }
     }
-
+    
+    func changeSpinsfromArbitrary(){
+        Task{
+            await self.calculateArbitraryMetropolisAlgorithm2D()
+            }
+        }
     
     func setupColdSpins() -> [[Double]]{
         let N = Double(N)!
         self.clearParameters ()
         self.calculateColdSpinConfiguration2D()
         return mySpins.spinConfiguration
-//        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
-//        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
     }
-    func setupArbitrarySpins(){
+    
+    func setupArbitrarySpins() -> [[Double]] {
         let N = Double(N)!
         self.clearParameters ()
-        self.calculateArbitraryMetropolisAlgorithm2D()
-//        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
-//        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
+        self.calculateArbitrarySpinConfiguration2D()
+        return mySpins.spinConfiguration
     }
     
     func clearParameters () {
@@ -202,7 +197,7 @@ struct ContentView: View {
             }
             mySpins.spinConfiguration.append(spinValue)
         }
-        //print(mySpins.spinConfiguration)
+        print(mySpins.spinConfiguration)
     }
     /// 2. Generate a trial configuration α(k+1) by
     ///     a. picking a particle i randomly and
@@ -246,7 +241,6 @@ struct ContentView: View {
         for j in 0..<upperLimitInteger {
             for i in 0..<upperLimitInteger {
                 if (i > 0 && i < (upperLimitInteger-1) && j > 0 && j < (upperLimitInteger-1)) {
-                    
                     let term1 = trialConfiguration[i+1][j]
                     let term2 = trialConfiguration[i-1][j]
                     let term3 = trialConfiguration[i][j+1]
@@ -256,7 +250,6 @@ struct ContentView: View {
                     trialEnergy = trialEnergy + trialEnergyValue
                 }
                 else if (i == 0 && j == 0) {
-                    
                     let term1 = trialConfiguration[1][0]
                     let term2 = trialConfiguration[0][1]
                     let term3 = trialConfiguration[upperLimitInteger-1][0]
@@ -264,10 +257,8 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[0][0])*(term1 + term2 + term3 + term4)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 else if (i == 0 && j == (upperLimitInteger-1)) {
-                    
                     let term1 = trialConfiguration[0][0]
                     let term2 = trialConfiguration[0][upperLimitInteger-2]
                     let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
@@ -275,10 +266,8 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 else if (i == (upperLimitInteger-1) && j == 0) {
-                    
                     let term1 = trialConfiguration[upperLimitInteger-1][1]
                     let term2 = trialConfiguration[upperLimitInteger-2][0]
                     let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
@@ -286,10 +275,8 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
-                    
                     let term1 = trialConfiguration[upperLimitInteger-1][0]
                     let term2 = trialConfiguration[upperLimitInteger-2][upperLimitInteger-1]
                     let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-2]
@@ -297,11 +284,9 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 // 0<x<N-1   y = N-1
                 else if (i > 0 && i < (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
-                    
                     let term1 = trialConfiguration[i+1][j]
                     let term2 = trialConfiguration[i-1][j]
                     let term3 = trialConfiguration[i][0]
@@ -309,11 +294,9 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term4 + term3)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 // 0<x<N-1   y = 0
                 else if (i > 0 && i < (upperLimitInteger-1) && j == 0) {
-                    
                     let term1 = trialConfiguration[i+1][j]
                     let term2 = trialConfiguration[i-1][j]
                     let term3 = trialConfiguration[i][j+1]
@@ -321,11 +304,9 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 // 0 < y < N-1     x = 0
                 else if (j > 0 && j < (upperLimitInteger-1) && i == 0) {
-                    
                     let term1 = trialConfiguration[i+1][j]
                     let term2 = trialConfiguration[upperLimitInteger-1][j]
                     let term3 = trialConfiguration[i][j+1]
@@ -333,11 +314,9 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term1 + term2)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                 }
                 // 0 < y < N-1     x = N-1
                 else if (j > 0 && j < (upperLimitInteger-1) && i == upperLimitInteger-1) {
-                    
                     let term1 = trialConfiguration[0][j]
                     let term2 = trialConfiguration[i-1][j]
                     let term3 = trialConfiguration[i][j+1]
@@ -345,62 +324,12 @@ struct ContentView: View {
                     
                     let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term2 + term1)
                     trialEnergy = trialEnergy + trialEnergyValue
-
                     }
                 }
             }
         print("Trial Energy:")
         print(trialEnergy)
-        }
-
-//        if (x > 0) {
-//            for j in 0..<upperLimitInteger {
-//                for i in 0..<(upperLimitInteger) {
-//
-//                    var iminus1 = 0
-//                    var iplus1 = 0
-//                    var jplus1 = 0
-//                    var jminus1 = 0
-//
-//                    if (i == 0 ) {
-//
-//                            iminus1 = upperLimitInteger - 1
-//                            iplus1 = i+1
-//
-//                    } else if (i == upperLimitInteger - 1) {
-//
-//                        iminus1 = i - 1
-//                        iplus1 = 0
-//                    }else{
-//
-//                        iminus1 = i - 1
-//                        iplus1 = i+1
-//
-//
-//                    }
-//
-//                    if (j == 0 ) {
-//
-//                            jminus1 = upperLimitInteger - 1
-//                            jplus1 = j+1
-//
-//                    } else if (j == upperLimitInteger - 1) {
-//
-//                        jminus1 = j - 1
-//                        jplus1 = 0
-//                    }else{
-//
-//                        jminus1 = j - 1
-//                        jplus1 = j+1
-//
-//
-//                    }
-//
-//
-//                    let trialEnergyValue = -J*(trialConfiguration[iminus1][jminus1]*trialConfiguration[i][jminus1]) - (B*bohrMagneton*trialConfiguration[j-1][i])
-//                    trialEnergy = trialEnergy + trialEnergyValue
-//                }
-//            }
+    }
 
     
     func calculateEnergyOfPreviousConfiguration2D (x:Int, J: Int) {
@@ -423,7 +352,6 @@ struct ContentView: View {
             for j in 0..<(upperLimitInteger) {
                 for i in 0..<(upperLimitInteger ) {
                     if (i > 0 && i < (upperLimitInteger-1) && j > 0 && j < (upperLimitInteger-1)) {
-                        
                         let term1 = mySpins.spinConfiguration[i+1][j]
                         let term2 = mySpins.spinConfiguration[i-1][j]
                         let term3 = mySpins.spinConfiguration[i][j+1]
@@ -433,7 +361,6 @@ struct ContentView: View {
                         energy = energy + energyValue
                     }
                     else if (i == 0 && j == 0) {
-                        
                         let term1 = mySpins.spinConfiguration[1][0]
                         let term2 = mySpins.spinConfiguration[0][1]
                         let term3 = mySpins.spinConfiguration[upperLimitInteger-1][0]
@@ -441,10 +368,8 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[0][0])*(term1 + term2 + term3 + term4)
                         energy = energy + energyValue
-
                     }
                     else if (i == 0 && j == (upperLimitInteger-1)) {
-                        
                         let term1 = mySpins.spinConfiguration[0][0]
                         let term2 = mySpins.spinConfiguration[0][upperLimitInteger-2]
                         let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
@@ -452,10 +377,8 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
                         energy = energy + energyValue
-
                     }
                     else if (i == (upperLimitInteger-1) && j == 0) {
-                        
                         let term1 = mySpins.spinConfiguration[upperLimitInteger-1][1]
                         let term2 = mySpins.spinConfiguration[upperLimitInteger-2][0]
                         let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
@@ -463,10 +386,8 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
                         energy = energy + energyValue
-
                     }
                     else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
-                        
                         let term1 = mySpins.spinConfiguration[upperLimitInteger-1][0]
                         let term2 = mySpins.spinConfiguration[upperLimitInteger-2][upperLimitInteger-1]
                         let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-2]
@@ -474,11 +395,9 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
                         energy = energy + energyValue
-
                     }
                     // 0<x<N-1   y = N-1
                     else if (i > 0 && i < (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
-                        
                         let term1 = mySpins.spinConfiguration[i+1][j]
                         let term2 = mySpins.spinConfiguration[i-1][j]
                         let term3 = mySpins.spinConfiguration[i][0]
@@ -486,11 +405,9 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term4 + term3)
                         energy = energy + energyValue
-
                     }
                     // 0<x<N-1   y = 0
                     else if (i > 0 && i < (upperLimitInteger-1) && j == 0) {
-                        
                         let term1 = mySpins.spinConfiguration[i+1][j]
                         let term2 = mySpins.spinConfiguration[i-1][j]
                         let term3 = mySpins.spinConfiguration[i][j+1]
@@ -498,11 +415,9 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4)
                         energy = energy + energyValue
-
                     }
                     // 0 < y < N-1     x = 0
                     else if (j > 0 && j < (upperLimitInteger-1) && i == 0) {
-                        
                         let term1 = mySpins.spinConfiguration[i+1][j]
                         let term2 = mySpins.spinConfiguration[upperLimitInteger-1][j]
                         let term3 = mySpins.spinConfiguration[i][j+1]
@@ -510,11 +425,9 @@ struct ContentView: View {
                         
                         let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term1 + term2)
                         energy = energy + energyValue
-
                     }
                     // 0 < y < N-1     x = N-1
                     else if (j > 0 && j < (upperLimitInteger-1) && i == upperLimitInteger-1) {
-                        
                         let term1 = mySpins.spinConfiguration[0][j]
                         let term2 = mySpins.spinConfiguration[i-1][j]
                         let term3 = mySpins.spinConfiguration[i][j+1]
@@ -523,16 +436,14 @@ struct ContentView: View {
                         let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term2 + term1)
                         energy = energy + energyValue
                         }
-                   // print(energy)
+                    }
                 }
             }
-        }
-    print("Energy:")
-    print(energy)
+        print("Energy:")
+        print(energy)
     }
+    
     func calculateEnergyCheck (x: Int, trialConfiguration: [[Double]]) {
-            
-            var currentSpinValue = true
 
             if (x > 0) {
                 if (trialEnergy <= energy) {
@@ -661,8 +572,6 @@ struct ContentView: View {
             let N = Double(N)!
             let upperLimit = pow(N, 2.0)
             let upperLimitInteger = Int(upperLimit)
-            var count: [Double] = []
-            var timeValue = 0.0
             var currentSpinValue = true
           //  for y in 0...(upperLimitInteger - 1) {
           // might need to be for x in 1...(upperLimitInteger) not sure
@@ -714,15 +623,15 @@ struct ContentView: View {
             print(specificHeat)
         
         }
-    func calculateArbitraryMetropolisAlgorithm2D () {
+    func calculateArbitraryMetropolisAlgorithm2D () async {
             print("Beginning of Metropolis Algorithm with Arbitrary Initial Spin Configuration:")
             let J: Int = 1
             let N = Double(N)!
             let upperLimit = sqrt(N)
             let upperLimitInteger = Int(upperLimit)
+            var currentSpinValue = true
 //            var count: [Double] = []
     //        var timeValue = 0.0
-            calculateArbitrarySpinConfiguration2D ()
             
          //   for y in 0...(upperLimitInteger - 1) {
                 for x in 1...(upperLimitInteger) {
@@ -732,6 +641,21 @@ struct ContentView: View {
                     calculateEnergyCheck(x: x, trialConfiguration: trialConfiguration)
                     //trialEnergy = 0.0
                     //energy = 0.0
+                    await withTaskGroup(of: Void.self) { group in
+                        for j in 0..<spinWidth {
+                            for i in 0..<spinWidth {
+                                if (mySpins.spinConfiguration[i][j] == 0.5) {
+                                    currentSpinValue = true
+                                }
+                                else {
+                                    currentSpinValue = false
+                                }
+                                
+                                
+                                twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.append(Spin(x: Double(i), y: Double(j), spin: currentSpinValue))
+                            }
+                        }
+                    }
                 }
               //  timeValue = Double(y-1) + 1.0
               //  count.append(timeValue)
