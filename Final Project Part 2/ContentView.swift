@@ -634,7 +634,7 @@ struct ContentView: View {
     //        var timeValue = 0.0
             
          //   for y in 0...(upperLimitInteger - 1) {
-                for x in 1...(upperLimitInteger) {
+                for x in 1...(1000000) {
                     var trialConfiguration = calculateTrialConfiguration2D()
                     calculateEnergyOfTrialConfiguration2D(x: x, J: J, trialConfiguration: trialConfiguration)
                     calculateEnergyOfPreviousConfiguration2D(x: x, J: J)
