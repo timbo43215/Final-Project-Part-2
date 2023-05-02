@@ -10,11 +10,11 @@ import Charts
 
 struct ContentView: View {
     
-    @State var upOrDown = [0.5, -0.5]
+    @State var upOrDown = [1.0, -1.0]
     @State var spinArray: [Double] = []
     @State var nextSpinArray: [Double] = []
     @State var timeArray: [Double] = []
-    @State var N: String = "100.0"
+    @State var N: String = "4"
     @State var J: String = "1.0"
     @State var g: String = "1.0"
     @State var B: String = "0.0"
@@ -28,6 +28,8 @@ struct ContentView: View {
     @StateObject var twoDMagnet = TwoDMagnet()
     let upColor = Color(red: 0.25, green: 0.5, blue: 0.75)
     let downColor = Color(red: 0.75, green: 0.5, blue: 0.25)
+    
+    @State var spinWidth = 25
     
     var body: some View {
         HStack {
@@ -49,9 +51,9 @@ struct ContentView: View {
                 Button(action: {
                     self.calculateTrialConfiguration2D()})
                 {Text("Calculate Trial Configuration")}
-                Button(action: {
-                    self.calculateColdMetropolisAlgorithm2D()})
-                {Text("Calculate Cold Metropolis Algorithm")}
+//                Button(action: {
+//                    self.calculateColdMetropolisAlgorithm2D()})
+//                {Text("Calculate Cold Metropolis Algorithm")}
                 Button(action: {
                     self.calculateArbitraryMetropolisAlgorithm2D()})
                 {Text("Calculate Cold Metropolis Algorithm")}
@@ -59,46 +61,101 @@ struct ContentView: View {
             VStack(){
                 TimelineView(.animation) { timeline in
                     Canvas { context, size in
-                        twoDMagnet.update(to: timeline.date, N: Int(Double(N)!), isThereAnythingInMyVariable: false)
+                        twoDMagnet.update(to: timeline.date)
                         
-                        for spin in twoDMagnet.spins {
-                            let N = Double(N)!
-                            let upperLimit = sqrt(N)
-                            let upperLimitInteger = Int(upperLimit)
-                            let rect = CGRect(x: spin.x * (size.width/CGFloat(mySpins.spinConfiguration.count)), y: spin.y * (size.height/CGFloat(upperLimitInteger)), width: (size.height/CGFloat(mySpins.spinConfiguration.count - 1)), height: (size.height/CGFloat(upperLimitInteger)))
+                        for spin in twoDMagnet.plotSpinConfiguration.plotSpinConfiguration {
+                            let rect = CGRect(x: spin.x * (size.width/CGFloat(spinWidth)), y: spin.y * (size.height/CGFloat(spinWidth)), width: (size.height/CGFloat(spinWidth)), height: (size.height/CGFloat(spinWidth)))
                             let shape = Rectangle().path(in: rect)
                             if (spin.spin){
                                 context.fill(shape, with: .color(upColor))}
                             else{
                                 context.fill(shape, with: .color(downColor))
+                                
                             }
                         }
                     }
                 }
+                
                 .background(.black)
                 .ignoresSafeArea()
                 .padding()
                 
+                Button("Start from Cold", action: setupSpins)
                 
-                Button("Start from Cold", action: setupColdSpins)
+                Button("SpinMe", action: changeSpins)
+                
+                
+               // Button("Start from Cold", action: setupColdSpins)
                 Button("Start from Arbitrary", action: setupArbitrarySpins)
             }
         }
     }
+    func setupSpins(){
+        let N = Double(N)!
+        spinWidth = Int(sqrt(N))
+        var currentSpinValue = true
+        self.calculateColdSpinConfiguration2D()
+        
+        for j in 0..<spinWidth {
+            for i in 0..<spinWidth {
+                if (mySpins.spinConfiguration[i][j] == 0.5) {
+                                    currentSpinValue = true
+                                }
+                                else {
+                                    currentSpinValue = false
+                                }
+
+                twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.append(Spin(x: Double(i), y: Double(j), spin: currentSpinValue))
+            }
+        }
+        
+        //twoDMagnet.setup(number: Int(spinWidth))
+        
+    }
     
-    func setupColdSpins(){
+    func spinChangeMethod(thing: inout [Spin]) {
+        for i in 0..<twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.count {
+            
+            thing[i].spin = Bool.random()
+        }
+    }
+    
+    func changeSpins(){
+        
+        Task{
+            
+           // for _ in 0...10000{
+//                await withTaskGroup(of: Void.self) { group in
+
+            await self.calculateColdMetropolisAlgorithm2D()
+//                    //spinChangeMethod(thing: &thing)
+//
+//                   // self.twoDMagnet.plotSpinConfiguration.plotSpinConfiguration = thing
+//
+//
+ //               }
+                
+                
+          //  }
+            
+        }
+    }
+
+    
+    func setupColdSpins() -> [[Double]]{
         let N = Double(N)!
         self.clearParameters ()
-        self.calculateColdMetropolisAlgorithm2D()
-        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
-        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
+        self.calculateColdSpinConfiguration2D()
+        return mySpins.spinConfiguration
+//        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+//        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
     }
     func setupArbitrarySpins(){
         let N = Double(N)!
         self.clearParameters ()
         self.calculateArbitraryMetropolisAlgorithm2D()
-        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
-        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
+//        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+//        twoDMagnet.setup(N: Int(N), isThereAnythingInMyVariable: false)
     }
     
     func clearParameters () {
@@ -225,20 +282,8 @@ struct ContentView: View {
     }
     func calculateEnergyCheck (x: Int, trialConfiguration: [[Double]]) {
             let uniformRandomNumber = Double.random(in: 0...1)
-//        for i in 0..<mySpins.spinConfiguration.count {
-//
-//            for j in 0..<mySpins.spinConfiguration.count {
-//
-//
-//                let myRandomNumber = Bool.random()
-//                if myRandomNumber {
-//                    mySpins.spinConfiguration[i][j] = 0.5
-//                }
-//                else {
-//                    mySpins.spinConfiguration[i][j] = -0.5
-//                }
-//            }
-//        }
+            var currentSpinValue = true
+
             if (x > 0) {
                 if (trialEnergy <= energy) {
                     mySpins.spinConfiguration = trialConfiguration
@@ -261,6 +306,7 @@ struct ContentView: View {
                     }
                 }
             }
+
         //twoDMagnet.spinConfiguration = mySpins.spinConfiguration
         }
         /// This calculates the relative probability from Equation 15.13 on page 395 in Landau.
@@ -356,7 +402,7 @@ struct ContentView: View {
     }
     
         // 15.4.1 Metropolis Algorithm Implementation
-    func calculateColdMetropolisAlgorithm2D () {
+    func calculateColdMetropolisAlgorithm2D () async {
             print("Beginning of Metropolis Algorithm with Cold Initial Spin Configuration:")
             let J: Int = 1
             let N = Double(N)!
@@ -364,18 +410,34 @@ struct ContentView: View {
             let upperLimitInteger = Int(upperLimit)
             var count: [Double] = []
             var timeValue = 0.0
-            calculateColdSpinConfiguration2D ()
+            var currentSpinValue = true
           //  for y in 0...(upperLimitInteger - 1) {
           // might need to be for x in 1...(upperLimitInteger) not sure
-                for x in 1...(upperLimitInteger) {
+                for x in 1...(10) {
                     var trialConfiguration = calculateTrialConfiguration2D()
                     calculateEnergyOfTrialConfiguration2D(x: x, J: J, trialConfiguration: trialConfiguration)
                     calculateEnergyOfPreviousConfiguration2D(x: x, J: J)
                     calculateEnergyCheck(x: x, trialConfiguration: trialConfiguration)
                     //trialEnergy = 0.0
                     //energy = 0.0
+                    await withTaskGroup(of: Void.self) { group in
+                        for j in 0..<spinWidth {
+                            for i in 0..<spinWidth {
+                                if (mySpins.spinConfiguration[i][j] == 0.5) {
+                                    currentSpinValue = true
+                                }
+                                else {
+                                    currentSpinValue = false
+                                }
+                                
+                                
+                                twoDMagnet.plotSpinConfiguration.plotSpinConfiguration.append(Spin(x: Double(i), y: Double(j), spin: currentSpinValue))
+                            }
+                        }
+                    }
                 }
-        twoDMagnet.spinConfiguration = mySpins.spinConfiguration
+        
+        //twoDMagnet.spinConfiguration = mySpins.spinConfiguration
             //0    timeValue = Double(y-1) + 1.0
               //  count.append(timeValue)
               //  mySpins.timeComponent.append(count)
