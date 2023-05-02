@@ -14,11 +14,11 @@ struct ContentView: View {
     @State var spinArray: [Double] = []
     @State var nextSpinArray: [Double] = []
     @State var timeArray: [Double] = []
-    @State var N: String = "4"
+    @State var N: String = "25"
     @State var J: String = "1.0"
     @State var g: String = "1.0"
     @State var B: String = "0.0"
-    @State var kT: String = "100.0"
+    @State var kT: String = "0.00001"
     @State var potentialArray: [Double] = []
     @State var trialEnergy: Double = 0.0
     @State var energy: Double = 0.0
@@ -90,6 +90,7 @@ struct ContentView: View {
             }
         }
     }
+    
     func setupSpins(){
         let N = Double(N)!
         spinWidth = Int(sqrt(N))
@@ -242,17 +243,165 @@ struct ContentView: View {
         let bohrMagneton = (eValue*hbarc)/(2.0*m)
         let B = Double(B)!
         
-        if (x > 0) {
-            for j in 1...upperLimitInteger {
-                for i in 1...(upperLimitInteger - 1) {
-                    let trialEnergyValue = -J*(trialConfiguration[j-1][i-1]*trialConfiguration[j-1][i]) - (B*bohrMagneton*trialConfiguration[j-1][i])
+        for j in 0..<upperLimitInteger {
+            for i in 0..<upperLimitInteger {
+                if (i > 0 && i < (upperLimitInteger-1) && j > 0 && j < (upperLimitInteger-1)) {
+                    
+                    let term1 = trialConfiguration[i+1][j]
+                    let term2 = trialConfiguration[i-1][j]
+                    let term3 = trialConfiguration[i][j+1]
+                    let term4 = trialConfiguration[i][j-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4)
                     trialEnergy = trialEnergy + trialEnergyValue
                 }
+                else if (i == 0 && j == 0) {
+                    
+                    let term1 = trialConfiguration[1][0]
+                    let term2 = trialConfiguration[0][1]
+                    let term3 = trialConfiguration[upperLimitInteger-1][0]
+                    let term4 = trialConfiguration[0][upperLimitInteger-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[0][0])*(term1 + term2 + term3 + term4)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                else if (i == 0 && j == (upperLimitInteger-1)) {
+                    
+                    let term1 = trialConfiguration[0][0]
+                    let term2 = trialConfiguration[0][upperLimitInteger-2]
+                    let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
+                    let term4 = trialConfiguration[1][upperLimitInteger-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                else if (i == (upperLimitInteger-1) && j == 0) {
+                    
+                    let term1 = trialConfiguration[upperLimitInteger-1][1]
+                    let term2 = trialConfiguration[upperLimitInteger-2][0]
+                    let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
+                    let term4 = trialConfiguration[0][0]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
+                    
+                    let term1 = trialConfiguration[upperLimitInteger-1][0]
+                    let term2 = trialConfiguration[upperLimitInteger-2][upperLimitInteger-1]
+                    let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-2]
+                    let term4 = trialConfiguration[0][upperLimitInteger-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                // 0<x<N-1   y = N-1
+                else if (i > 0 && i < (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
+                    
+                    let term1 = trialConfiguration[i+1][j]
+                    let term2 = trialConfiguration[i-1][j]
+                    let term3 = trialConfiguration[i][0]
+                    let term4 = trialConfiguration[i][j-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term4 + term3)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                // 0<x<N-1   y = 0
+                else if (i > 0 && i < (upperLimitInteger-1) && j == 0) {
+                    
+                    let term1 = trialConfiguration[i+1][j]
+                    let term2 = trialConfiguration[i-1][j]
+                    let term3 = trialConfiguration[i][j+1]
+                    let term4 = trialConfiguration[i][upperLimitInteger-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                // 0 < y < N-1     x = 0
+                else if (j > 0 && j < (upperLimitInteger-1) && i == 0) {
+                    
+                    let term1 = trialConfiguration[i+1][j]
+                    let term2 = trialConfiguration[upperLimitInteger-1][j]
+                    let term3 = trialConfiguration[i][j+1]
+                    let term4 = trialConfiguration[i][j-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term1 + term2)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                }
+                // 0 < y < N-1     x = N-1
+                else if (j > 0 && j < (upperLimitInteger-1) && i == upperLimitInteger-1) {
+                    
+                    let term1 = trialConfiguration[0][j]
+                    let term2 = trialConfiguration[i-1][j]
+                    let term3 = trialConfiguration[i][j+1]
+                    let term4 = trialConfiguration[i][j-1]
+                    
+                    let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term2 + term1)
+                    trialEnergy = trialEnergy + trialEnergyValue
+
+                    }
+                }
             }
-        }
         print("Trial Energy:")
         print(trialEnergy)
-    }
+        }
+
+//        if (x > 0) {
+//            for j in 0..<upperLimitInteger {
+//                for i in 0..<(upperLimitInteger) {
+//
+//                    var iminus1 = 0
+//                    var iplus1 = 0
+//                    var jplus1 = 0
+//                    var jminus1 = 0
+//
+//                    if (i == 0 ) {
+//
+//                            iminus1 = upperLimitInteger - 1
+//                            iplus1 = i+1
+//
+//                    } else if (i == upperLimitInteger - 1) {
+//
+//                        iminus1 = i - 1
+//                        iplus1 = 0
+//                    }else{
+//
+//                        iminus1 = i - 1
+//                        iplus1 = i+1
+//
+//
+//                    }
+//
+//                    if (j == 0 ) {
+//
+//                            jminus1 = upperLimitInteger - 1
+//                            jplus1 = j+1
+//
+//                    } else if (j == upperLimitInteger - 1) {
+//
+//                        jminus1 = j - 1
+//                        jplus1 = 0
+//                    }else{
+//
+//                        jminus1 = j - 1
+//                        jplus1 = j+1
+//
+//
+//                    }
+//
+//
+//                    let trialEnergyValue = -J*(trialConfiguration[iminus1][jminus1]*trialConfiguration[i][jminus1]) - (B*bohrMagneton*trialConfiguration[j-1][i])
+//                    trialEnergy = trialEnergy + trialEnergyValue
+//                }
+//            }
+
     
     func calculateEnergyOfPreviousConfiguration2D (x:Int, J: Int) {
         let N = Double(N)!
@@ -271,17 +420,118 @@ struct ContentView: View {
         let B = Double(B)!
         
         if (x > 0) {
-            for j in 1...(upperLimitInteger - 1) {
-                for i in 1...(upperLimitInteger - 1) {
-                    let energyValue = -J*(mySpins.spinConfiguration[j-1][i-1]*mySpins.spinConfiguration[j-1][i]) - (B*bohrMagneton*mySpins.spinConfiguration[j-1][i])
-                    energy = energy + energyValue
+            for j in 0..<(upperLimitInteger) {
+                for i in 0..<(upperLimitInteger ) {
+                    if (i > 0 && i < (upperLimitInteger-1) && j > 0 && j < (upperLimitInteger-1)) {
+                        
+                        let term1 = mySpins.spinConfiguration[i+1][j]
+                        let term2 = mySpins.spinConfiguration[i-1][j]
+                        let term3 = mySpins.spinConfiguration[i][j+1]
+                        let term4 = mySpins.spinConfiguration[i][j-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                        energy = energy + energyValue
+                    }
+                    else if (i == 0 && j == 0) {
+                        
+                        let term1 = mySpins.spinConfiguration[1][0]
+                        let term2 = mySpins.spinConfiguration[0][1]
+                        let term3 = mySpins.spinConfiguration[upperLimitInteger-1][0]
+                        let term4 = mySpins.spinConfiguration[0][upperLimitInteger-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[0][0])*(term1 + term2 + term3 + term4)
+                        energy = energy + energyValue
+
+                    }
+                    else if (i == 0 && j == (upperLimitInteger-1)) {
+                        
+                        let term1 = mySpins.spinConfiguration[0][0]
+                        let term2 = mySpins.spinConfiguration[0][upperLimitInteger-2]
+                        let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
+                        let term4 = mySpins.spinConfiguration[1][upperLimitInteger-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
+                        energy = energy + energyValue
+
+                    }
+                    else if (i == (upperLimitInteger-1) && j == 0) {
+                        
+                        let term1 = mySpins.spinConfiguration[upperLimitInteger-1][1]
+                        let term2 = mySpins.spinConfiguration[upperLimitInteger-2][0]
+                        let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
+                        let term4 = mySpins.spinConfiguration[0][0]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
+                        energy = energy + energyValue
+
+                    }
+                    else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
+                        
+                        let term1 = mySpins.spinConfiguration[upperLimitInteger-1][0]
+                        let term2 = mySpins.spinConfiguration[upperLimitInteger-2][upperLimitInteger-1]
+                        let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-2]
+                        let term4 = mySpins.spinConfiguration[0][upperLimitInteger-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
+                        energy = energy + energyValue
+
+                    }
+                    // 0<x<N-1   y = N-1
+                    else if (i > 0 && i < (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
+                        
+                        let term1 = mySpins.spinConfiguration[i+1][j]
+                        let term2 = mySpins.spinConfiguration[i-1][j]
+                        let term3 = mySpins.spinConfiguration[i][0]
+                        let term4 = mySpins.spinConfiguration[i][j-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term4 + term3)
+                        energy = energy + energyValue
+
+                    }
+                    // 0<x<N-1   y = 0
+                    else if (i > 0 && i < (upperLimitInteger-1) && j == 0) {
+                        
+                        let term1 = mySpins.spinConfiguration[i+1][j]
+                        let term2 = mySpins.spinConfiguration[i-1][j]
+                        let term3 = mySpins.spinConfiguration[i][j+1]
+                        let term4 = mySpins.spinConfiguration[i][upperLimitInteger-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                        energy = energy + energyValue
+
+                    }
+                    // 0 < y < N-1     x = 0
+                    else if (j > 0 && j < (upperLimitInteger-1) && i == 0) {
+                        
+                        let term1 = mySpins.spinConfiguration[i+1][j]
+                        let term2 = mySpins.spinConfiguration[upperLimitInteger-1][j]
+                        let term3 = mySpins.spinConfiguration[i][j+1]
+                        let term4 = mySpins.spinConfiguration[i][j-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term1 + term2)
+                        energy = energy + energyValue
+
+                    }
+                    // 0 < y < N-1     x = N-1
+                    else if (j > 0 && j < (upperLimitInteger-1) && i == upperLimitInteger-1) {
+                        
+                        let term1 = mySpins.spinConfiguration[0][j]
+                        let term2 = mySpins.spinConfiguration[i-1][j]
+                        let term3 = mySpins.spinConfiguration[i][j+1]
+                        let term4 = mySpins.spinConfiguration[i][j-1]
+                        
+                        let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term2 + term1)
+                        energy = energy + energyValue
+                        }
+                   // print(energy)
                 }
             }
         }
-       // print(energy)
+    print("Energy:")
+    print(energy)
     }
     func calculateEnergyCheck (x: Int, trialConfiguration: [[Double]]) {
-            let uniformRandomNumber = Double.random(in: 0...1)
+            
             var currentSpinValue = true
 
             if (x > 0) {
@@ -292,7 +542,10 @@ struct ContentView: View {
                     print(mySpins.spinConfiguration)
                 }
                 else {
-                    if (calculateRelativeProbability() >= uniformRandomNumber){
+                    let R = calculateRelativeProbability()
+                    let uniformRandomNumber = Double.random(in: 0...1)
+                    
+                    if (R >= uniformRandomNumber){
                         mySpins.spinConfiguration = trialConfiguration
                         myEnergy.energy1D.append(trialEnergy)
                         print("Trial Accepted")
@@ -376,10 +629,10 @@ struct ContentView: View {
         let upperLimit = sqrt(N)
         let upperLimitInteger = Int(upperLimit)
         
-        for i in 1...(upperLimitInteger - 1) {
-            energyValueForSum = myEnergy.energy1D[i]
-            U2Sum = pow(energyValueForSum, 2.0)
-        }
+//        for i in 1...(upperLimitInteger - 1) {
+//            energyValueForSum = myEnergy.energy1D[i]
+//            U2Sum = pow(energyValueForSum, 2.0)
+//        }
         U2 = U2Sum/N
         
         return U2
@@ -406,14 +659,14 @@ struct ContentView: View {
             print("Beginning of Metropolis Algorithm with Cold Initial Spin Configuration:")
             let J: Int = 1
             let N = Double(N)!
-            let upperLimit = sqrt(N)
+            let upperLimit = pow(N, 2.0)
             let upperLimitInteger = Int(upperLimit)
             var count: [Double] = []
             var timeValue = 0.0
             var currentSpinValue = true
           //  for y in 0...(upperLimitInteger - 1) {
           // might need to be for x in 1...(upperLimitInteger) not sure
-                for x in 1...(10) {
+                for x in 1...(1000000) {
                     var trialConfiguration = calculateTrialConfiguration2D()
                     calculateEnergyOfTrialConfiguration2D(x: x, J: J, trialConfiguration: trialConfiguration)
                     calculateEnergyOfPreviousConfiguration2D(x: x, J: J)
