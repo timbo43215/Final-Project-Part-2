@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB1BC1D22A02E393002D4BEB /* plotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1BC1D12A02E393002D4BEB /* plotData.swift */; };
+		AB1BC1D32A02E393002D4BEB /* plotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1BC1D12A02E393002D4BEB /* plotData.swift */; };
+		AB1BC1D42A02E393002D4BEB /* plotData.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1BC1D12A02E393002D4BEB /* plotData.swift */; };
 		AB4213E929F30A5600BF2B0F /* Final_Project_Part_2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4213E829F30A5600BF2B0F /* Final_Project_Part_2App.swift */; };
 		AB4213EB29F30A5600BF2B0F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4213EA29F30A5600BF2B0F /* ContentView.swift */; };
 		AB4213ED29F30A5700BF2B0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB4213EC29F30A5700BF2B0F /* Assets.xcassets */; };
@@ -51,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AB1BC1D12A02E393002D4BEB /* plotData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = plotData.swift; sourceTree = "<group>"; };
 		AB4213E529F30A5600BF2B0F /* Final Project Part 2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Final Project Part 2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB4213E829F30A5600BF2B0F /* Final_Project_Part_2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Final_Project_Part_2App.swift; sourceTree = "<group>"; };
 		AB4213EA29F30A5600BF2B0F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 				AB42141929F30A9900BF2B0F /* Spins.swift */,
 				AB42141D29F30AAD00BF2B0F /* Potential.swift */,
 				AB42142129F30AC600BF2B0F /* Spin Struct.swift */,
+				AB1BC1D12A02E393002D4BEB /* plotData.swift */,
 				AB42142529F30ADE00BF2B0F /* twoDMagnet.swift */,
 				AB4213EC29F30A5700BF2B0F /* Assets.xcassets */,
 				AB4213F129F30A5700BF2B0F /* Final_Project_Part_2.entitlements */,
@@ -288,6 +293,7 @@
 			files = (
 				AB4213EB29F30A5600BF2B0F /* ContentView.swift in Sources */,
 				AB42142229F30AC600BF2B0F /* Spin Struct.swift in Sources */,
+				AB1BC1D22A02E393002D4BEB /* plotData.swift in Sources */,
 				AB42142629F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
 				AB42141E29F30AAD00BF2B0F /* Potential.swift in Sources */,
 				AB42141629F30A8500BF2B0F /* Energy.swift in Sources */,
@@ -302,6 +308,7 @@
 			files = (
 				AB42141B29F30A9900BF2B0F /* Spins.swift in Sources */,
 				AB42142729F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
+				AB1BC1D32A02E393002D4BEB /* plotData.swift in Sources */,
 				AB42142929F30BE000BF2B0F /* ContentView.swift in Sources */,
 				AB4213FB29F30A5700BF2B0F /* Final_Project_Part_2Tests.swift in Sources */,
 				AB42142329F30AC600BF2B0F /* Spin Struct.swift in Sources */,
@@ -319,6 +326,7 @@
 				AB42142A29F30BE100BF2B0F /* ContentView.swift in Sources */,
 				AB42142829F30ADE00BF2B0F /* twoDMagnet.swift in Sources */,
 				AB42142029F30AAD00BF2B0F /* Potential.swift in Sources */,
+				AB1BC1D42A02E393002D4BEB /* plotData.swift in Sources */,
 				AB42141829F30A8500BF2B0F /* Energy.swift in Sources */,
 				AB42140729F30A5700BF2B0F /* Final_Project_Part_2UITestsLaunchTests.swift in Sources */,
 				AB42141C29F30A9900BF2B0F /* Spins.swift in Sources */,
