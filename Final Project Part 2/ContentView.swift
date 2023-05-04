@@ -288,7 +288,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[i][j+1]
                         let term4 = trialConfiguration[i][j-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     else if (i == 0 && j == 0) {
@@ -297,7 +297,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[upperLimitInteger-1][0]
                         let term4 = trialConfiguration[0][upperLimitInteger-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[0][0])*(term1 + term2 + term3 + term4)
+                        let trialEnergyValue = -2.0*(trialConfiguration[0][0])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     else if (i == 0 && j == (upperLimitInteger-1)) {
@@ -306,7 +306,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
                         let term4 = trialConfiguration[1][upperLimitInteger-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
+                        let trialEnergyValue = -2.0*(trialConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     else if (i == (upperLimitInteger-1) && j == 0) {
@@ -315,7 +315,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-1]
                         let term4 = trialConfiguration[0][0]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
+                        let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
@@ -324,7 +324,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[upperLimitInteger-1][upperLimitInteger-2]
                         let term4 = trialConfiguration[0][upperLimitInteger-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
+                        let trialEnergyValue = -2.0*(trialConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     // 0<x<N-1   y = N-1
@@ -334,7 +334,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[i][0]
                         let term4 = trialConfiguration[i][j-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term4 + term3)
+                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term4 + term3) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     // 0<x<N-1   y = 0
@@ -344,7 +344,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[i][j+1]
                         let term4 = trialConfiguration[i][upperLimitInteger-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     // 0 < y < N-1     x = 0
@@ -354,7 +354,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[i][j+1]
                         let term4 = trialConfiguration[i][j-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term1 + term2)
+                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term1 + term2) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                     // 0 < y < N-1     x = N-1
@@ -364,7 +364,7 @@ struct ContentView: View {
                         let term3 = trialConfiguration[i][j+1]
                         let term4 = trialConfiguration[i][j-1]
                         
-                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term2 + term1)
+                        let trialEnergyValue = -2.0*(trialConfiguration[i][j])*(term3 + term4 + term2 + term1) - (B*bohrMagneton*trialConfiguration[i][j])
                         trialEnergy = trialEnergy + trialEnergyValue
                     }
                 }
@@ -399,7 +399,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[i][j+1]
                             let term4 = mySpins.spinConfiguration[i][j-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         else if (i == 0 && j == 0) {
@@ -408,7 +408,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[upperLimitInteger-1][0]
                             let term4 = mySpins.spinConfiguration[0][upperLimitInteger-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[0][0])*(term1 + term2 + term3 + term4)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[0][0])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         else if (i == 0 && j == (upperLimitInteger-1)) {
@@ -417,7 +417,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
                             let term4 = mySpins.spinConfiguration[1][upperLimitInteger-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[0][upperLimitInteger-1])*(term2 + term4 + term3 + term1) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         else if (i == (upperLimitInteger-1) && j == 0) {
@@ -426,7 +426,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1]
                             let term4 = mySpins.spinConfiguration[0][0]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][0])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         else if (i == (upperLimitInteger-1) && j == (upperLimitInteger-1)) {
@@ -435,7 +435,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-2]
                             let term4 = mySpins.spinConfiguration[0][upperLimitInteger-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[upperLimitInteger-1][upperLimitInteger-1])*(term2 + term1 + term3 + term4) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         // 0<x<N-1   y = N-1
@@ -445,7 +445,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[i][0]
                             let term4 = mySpins.spinConfiguration[i][j-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term4 + term3)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term4 + term3) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         // 0<x<N-1   y = 0
@@ -455,7 +455,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[i][j+1]
                             let term4 = mySpins.spinConfiguration[i][upperLimitInteger-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term1 + term2 + term3 + term4) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         // 0 < y < N-1     x = 0
@@ -465,7 +465,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[i][j+1]
                             let term4 = mySpins.spinConfiguration[i][j-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term1 + term2)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term1 + term2) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                         // 0 < y < N-1     x = N-1
@@ -475,7 +475,7 @@ struct ContentView: View {
                             let term3 = mySpins.spinConfiguration[i][j+1]
                             let term4 = mySpins.spinConfiguration[i][j-1]
                             
-                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term2 + term1)
+                            let energyValue = -2.0*(mySpins.spinConfiguration[i][j])*(term3 + term4 + term2 + term1) - (B*bohrMagneton*mySpins.spinConfiguration[i][j])
                             energy = energy + energyValue
                         }
                     }
